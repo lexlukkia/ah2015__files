@@ -1,0 +1,78 @@
+Imports word = Microsoft.Office.Interop.Word
+Imports System
+Imports System.IO
+
+Public Class Form1
+
+    Dim oWord As word.Application
+    Dim oDoc As word.Document
+
+
+    Public Function FileInUse(ByVal sFile As String) As Boolean
+
+        Dim thisFileInUse As Boolean = False
+        If System.IO.File.Exists(sFile) Then
+            Try
+                Using f As New IO.FileStream(sFile, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
+                    ' thisFileInUse = False
+                End Using
+            Catch
+                MsgBox("file in use")
+                thisFileInUse = True
+            End Try
+        End If
+        Return thisFileInUse
+    End Function
+
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Process.Start()
+
+        oWord = CreateObject("Word.Application")
+        oWord.Visible = True
+        oDoc = oWord.Documents.Add("C:\xampp\htdocs\ah2015_files\angelhack_word_file.docx")
+
+        'Dim wordloc = "c:\intel\angelhack_word_file.docx"
+
+        'FileInUse(wordloc)
+
+        Me.Hide()
+
+    End Sub
+
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        'Dim objApp As word.Application
+        'Dim objDoc As word.Document
+        'objDoc = CreateObject("Word.Application")
+        'objApp = New word.Application()
+        'objDoc = objApp.Documents.Open("c:\intel\angelhack_word_file.docx")
+        'objDoc.Activate()
+
+        ''objApp.Selection.TypeText("some text")
+        'objDoc.SaveAs("c:\intel\newAngelHackfile_.docx")
+        'objDoc.Close()
+        'objApp.Quit()
+        'objDoc = Nothing
+        'objApp = Nothing
+
+        'oWord = New word.Application()
+        'oDoc = oWord.Documents.Open("c:\intel\angelhack_word_file.docx")
+        Dim path As String = "c:\intel\angelhack_word_file.docx"
+        Dim info As FileInfo = New FileInfo(path)
+        info.IsReadOnly = False
+        oDoc.Activate()
+
+        'objApp.Selection.TypeText("some text")
+        oDoc.Save()
+        oDoc.Close()
+        oWord.Quit()
+        oDoc = Nothing
+        oWord = Nothing
+
+    End Sub
+End Class
